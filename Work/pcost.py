@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # pcost.py
 #
 # Exercise 1.27# import gzip
@@ -18,16 +19,26 @@ def portfolio_cost(filename):
             except ValueError:
                 print('warning!!')
                 continue
-        return total_money
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = 'Data/portfolio.csv'
-try:
-    cost = portfolio_cost(filename)
-    print ('Total cost:',cost)
-except ValueError:
-    print('warning!!')
+        print(f'total_cost:{total_money}')
+
+def main(argv):
+    if len(argv) != 2:
+        raise SystemError(f'用法:{argv[0]} 价格文件')
+    portfolio_cost(argv[1])
+
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
+# if len(sys.argv) == 2:
+#     filename = sys.argv[1]
+# else:
+#     filename = 'Data/portfolio.csv'
+# try:
+#     cost = portfolio_cost(filename)
+#     print ('Total cost:',cost)
+# except ValueError:
+#     print('warning!!')
+
 
 
 
