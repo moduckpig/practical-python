@@ -1,43 +1,51 @@
 # report.py
 #
 # Exercise 2.4
-import csv
+# import csv
+from fileparse import parse_csv
 def read_portfolio(filename):
 
-    with  open(filename,'rt') as f:
         portfolio = []
-        lines = csv.reader(f)
-        header = next(lines)
-        for line in lines:
-            if len(line) < 3:
-                continue
-            try:
-                row = {'name':line[0],'shares':int(line[1]),'price':float(line[2])}
-                portfolio.append(row)
-            except ValueError:
-                print('warning!!!')
-                continue
-    return portfolio
+        portfolio = parse_csv(filename,select=['name','shares','price'],types=[str,int,float])
+        return portfolio
+        # lines = csv.reader(f)
+        # headers = next[lines]
+        # for line in lines:
+        #     if len(line) < 3:
+        #         continue
+        #     try:
+
+        #         row = {'name':line[0],'shares':int(line[1]),'price':float(line[2])}
+        #         portfolio.append(row)
+        #     except ValueError:
+        #         print('warning!!!')
+        #         continue
+    
 def read_price(filename):
 
-    with open(filename,'rt') as f:
-        prices = {}
-        lines = csv.reader(f)
-        for line in lines:
-            if len(line) < 2:
-                print('warning!!!')
-                continue
-            try:
-                prices[line[0]] = float(line[1]) 
-            except ValueError:
-                continue
+    prices = dict(parse_csv(filename,types=[str,float],has_headers=False))
+
+    # with open(filename,'rt') as f:
+    #     prices = {}
+    #     lines = csv.reader(f)
+    #     for line in lines:
+    #         if len(line) < 2:
+    #             print('warning!!!')
+    #             continue
+    #         try:
+    #             prices[line[0]] = float(line[1]) 
+    #         except ValueError:
+    #             continue
     return prices
 def make_report(portfolio,price):
 
     report = []
     for line in portfolio:
-        row = (line['name'],line['shares'],price[line['name']],price[line['name']]-line['price'])
-        report.append(row)
+        try:
+            row = (line['name'],line['shares'],price[line['name']],price[line['name']]-line['price'])
+            report.append(row)
+        except KeyError:
+            continue
     return report
 def print_report(reportdata):
 
@@ -53,11 +61,13 @@ def portfolio_report(portfoliofilename,pricefilename):
     report = make_report(portfolio,price)
     print_report(report)
 
+portfolio_report('Data/portfolio.csv','Data/prices.csv')
+
 # portfolio = read_portfolio('Data/portfolio.csv')
 # prices = read_price('Data/prices.csv')
 # report = make_report(portfolio,prices)
 # headers = ('Name','Shares','Price','Change')
-# #%ÕâÖÖ±íÊ¾·½·¨Ö»ÄÜÓÃÓÚÔª×éÉÏ
+# #%è¿™ç§è¡¨ç¤ºæ–¹æ³•åªèƒ½ç”¨äºŽå…ƒç»„ä¸Š
 # print('%10s %10s %10s %10s' % headers)
 # print(('-'*10+' ')*4)
 # for r in report:
