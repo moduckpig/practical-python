@@ -7,8 +7,9 @@
 from fileparse import parse_csv
 def read_portfolio(filename):
 
-        portfolio = []
-        portfolio = parse_csv(filename,select=['name','shares','price'],types=[str,int,float])
+        with open(filename,'rt') as lines:
+            portfolio = []
+            portfolio = parse_csv(lines,select=['name','shares','price'],types=[str,int,float])
         return portfolio
         # lines = csv.reader(f)
         # headers = next[lines]
@@ -25,7 +26,8 @@ def read_portfolio(filename):
     
 def read_price(filename):
 
-    prices = dict(parse_csv(filename,types=[str,float],has_headers=False))
+    with open(filename,'rt') as lines:
+        prices = dict(parse_csv(lines,types=[str,float],has_headers=False))
 
     # with open(filename,'rt') as f:
     #     prices = {}
